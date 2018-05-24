@@ -1,4 +1,4 @@
-package com.ecommerce.ECommerec;
+package com.ecommerce.ECommerce;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ECommerecApplicationTests {
+public class ECommerceApplicationTests {
 
 	@Test
 	public void contextLoads() {
