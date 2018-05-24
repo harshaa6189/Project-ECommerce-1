@@ -1,4 +1,4 @@
-package Controller;
+package com.ecommerce.ECommerce.Controller;
 
 
 import com.ecommerce.ECommerce.Service.ProductServiceInterface;
