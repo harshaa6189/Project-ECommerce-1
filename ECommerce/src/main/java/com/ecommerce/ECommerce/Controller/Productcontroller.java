@@ -2,14 +2,12 @@ package com.ecommerce.ECommerce.Controller;
 
 
 import com.ecommerce.ECommerce.DTO.ProductDto;
-import com.ecommerce.ECommerce.Exception.ProductException;
 import com.ecommerce.ECommerce.Model.Product;
 import com.ecommerce.ECommerce.Service.ProductServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("products")
@@ -23,22 +21,37 @@ public class Productcontroller {
         return productService.createProduct(product);
     }
 
-    @RequestMapping("/getProductList")
+    @RequestMapping("/getAllProducts")
     public List<Product> getAllProducts() {
         List<Product> products = productService.getProductList();
         return products;
     }
 
-    @RequestMapping("getProductById/{productId}")
+    @RequestMapping("/getProductById/{productId}")
     public List<Product> getProductById(@PathVariable(value = "productId") String productId){
         List<Product> product = productService.getProductById(productId);
         return product;
     }
 
-    @RequestMapping("getMerchantRating")
+    @RequestMapping("/getMerchantRating")
     public int getMerchantRating(@PathVariable(value = "productId") String productId){
         return productService.getMerchantRating(productId);
     }
 
+    @RequestMapping("/getProductByCategory")
+    public List<Product> getProductsByCategory(@RequestParam String productCategory){
+        return productService.getProductsByCategory(productCategory);
+    }
 
+    @RequestMapping("getProductSortByPrice")
+    public List<Product> getProductSortByPrice(){
+        return productService.getProductsSortByPrice();
+    }
+
+    @RequestMapping("getProductSortByRating")
+    public List<Product> getProductSortByRating(){
+        return productService.getProductSortByRating();
+    }
 }
+
+

@@ -33,8 +33,11 @@ public class Product {
 
     private int merchantRating;
 
+    private int productRating;
 
-    public Product(int merchantRating, String productImageUrl, String productId, String productName, Double productPrice, int unitStock, String productDescription, String productMerchant) {
+
+
+    public Product(int productRating, String productCategory, int merchantRating, String productImageUrl, String productId, String productName, Double productPrice, int unitStock, String productDescription, String productMerchant) {
         //Id = id;
         this.productId = productId;
         this.productName = productName;
@@ -44,10 +47,28 @@ public class Product {
         this.productMerchant = productMerchant;
         this.productImageUrl = productImageUrl;
         this.merchantRating = merchantRating;
+        this.productCategory = productCategory;
+        this.productRating = productRating;
     }
 
     public Product(){
 
+    }
+
+    public int getProductRating() {
+        return productRating;
+    }
+
+    public void setProductRating(int productRating) {
+        this.productRating = productRating;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
     }
 
     public int getMerchantRating() {

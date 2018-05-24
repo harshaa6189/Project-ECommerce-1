@@ -11,6 +11,24 @@ public class ProductDto {
     private int unitStock;
     private String productDescription;
     private String productMerchant;
+    private String productCategory;
+    private int productRating;
+
+    public int getProductRating() {
+        return productRating;
+    }
+
+    public void setProductRating(int productRating) {
+        this.productRating = productRating;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+    }
 
     public Long getId() {
         return Id;
