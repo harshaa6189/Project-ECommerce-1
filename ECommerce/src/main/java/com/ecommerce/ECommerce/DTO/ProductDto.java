@@ -4,20 +4,19 @@ package com.ecommerce.ECommerce.DTO;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ProductDto {
-    private String Id;
+    private Long Id;
     private String productId;
     private String productName;
     private Double productPrice;
     private int unitStock;
     private String productDescription;
     private String productMerchant;
-    private MultipartFile productImage;
 
-    public String getId() {
+    public Long getId() {
         return Id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         Id = id;
     }
 
@@ -67,13 +66,5 @@ public class ProductDto {
 
     public void setProductMerchant(String productMerchant) {
         this.productMerchant = productMerchant;
-    }
-
-    public MultipartFile getProductImage() {
-        return productImage;
-    }
-
-    public void setProductImage(MultipartFile productImage) {
-        this.productImage = productImage;
     }
 }

@@ -2,54 +2,68 @@ package com.ecommerce.ECommerce.Model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Generated;
-import javax.validation.constraints.NotNull;
 
 @Document(collection = Product.COLLECTION_NAME)
 public class Product {
     public static final String COLLECTION_NAME = "product";
 
+    //@NotNull(message = "Product Id mustn\'t be null")
     @Id
-    private String Id;
-
-    @NotNull(message = "Product Id mustn\'t be null")
     private String productId;
 
-    @NotNull(message = "Product Name mustn\'t be null")
+    //@NotNull(message = "Product Name mustn\'t be null")
     private String productName;
 
-    @NotNull(message = "product Price mustn\'t be null")
+    //@NotNull(message = "product Price mustn\'t be null")
     private Double productPrice;
 
     private int unitStock;
 
-    @NotNull(message = "Product Description mustn\'t be null")
+    //@NotNull(message = "Product Description mustn\'t be null")
     private String productDescription;
 
-    @NotNull(message = "Product Merchant mustn\'t be null")
+    //@NotNull(message = "Product Merchant mustn\'t be null")
     private String productMerchant;
 
-    private MultipartFile productImage;
+    //@NotNull(message = "Product Category mustn\'t be null")
+    private String productCategory;
 
-    public Product(String id, @NotNull(message = "Product Id mustn\'t be null") String productId, @NotNull(message = "Product Name mustn\'t be null") String productName, @NotNull(message = "product Price mustn\'t be null") Double productPrice, int unitStock, @NotNull(message = "Product Description mustn\'t be null") String productDescription, @NotNull(message = "Product Merchant mustn\'t be null") String productMerchant, MultipartFile productImage) {
-        Id = id;
+    private String productImageUrl;
+
+    private int merchantRating;
+
+
+    public Product(int merchantRating, String productImageUrl, String productId, String productName, Double productPrice, int unitStock, String productDescription, String productMerchant) {
+        //Id = id;
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.unitStock = unitStock;
         this.productDescription = productDescription;
         this.productMerchant = productMerchant;
-        this.productImage = productImage;
+        this.productImageUrl = productImageUrl;
+        this.merchantRating = merchantRating;
     }
 
-    public String getId() {
-        return Id;
+    public Product(){
+
     }
 
-    public void setId(String id) {
-        Id = id;
+    public int getMerchantRating() {
+        return merchantRating;
+    }
+
+    public void setMerchantRating(int merchantRating) {
+        this.merchantRating = merchantRating;
+    }
+
+    public String getProductImageUrl() {
+        return productImageUrl;
+    }
+
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl;
     }
 
     public String getProductId() {
@@ -100,11 +114,4 @@ public class Product {
         this.productMerchant = productMerchant;
     }
 
-    public MultipartFile getProductImage() {
-        return productImage;
-    }
-
-    public void setProductImage(MultipartFile productImage) {
-        this.productImage = productImage;
-    }
 }
