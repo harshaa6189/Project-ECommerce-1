@@ -38,7 +38,7 @@ public class Productcontroller {
         return productService.getMerchantRating(productId);
     }
 
-    @RequestMapping("/getProductByCategory")
+    @RequestMapping("/get-product-by-category")
     public List<Product> getProductsByCategory(@RequestParam String productCategory){
         return productService.getProductsByCategory(productCategory);
     }
