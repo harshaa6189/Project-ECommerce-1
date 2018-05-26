@@ -2,24 +2,37 @@ package com.example.demo.Service;
 
 import com.example.demo.DbObject;
 import com.example.demo.Dto.ProductDto;
+import com.example.demo.Model.ProductModel;
 import com.example.demo.Product;
 import com.example.demo.Repository.CartRepository;
+import com.google.gson.Gson;
+import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/*
+
+
+import com.squareup.okhttp.*;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+
+ */
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CartServiceImplementation implements CartService {
 
+    private static OkHttpClient client = new OkHttpClient();
+
+
     @Autowired
     private CartRepository cartRepository;
 
     @Override
     public boolean addToCart(ProductDto productDto) {
-
-//        int key = Integer.parseInt(productDto.getProductId());
 
         DbObject dbObject = new DbObject(productDto.getProductId(),productDto.getUnitStock());
 
@@ -55,7 +68,7 @@ public class CartServiceImplementation implements CartService {
 
         if(!exists)
         {
-            //Throw exception
+            //############################################## Throw exception
         }
 
         Product tempProduct = cartRepository.findById(productDto.getUserId()).get();
@@ -63,11 +76,10 @@ public class CartServiceImplementation implements CartService {
         ArrayList<DbObject> tempArray = tempProduct.getProductList();
         DbObject mainObject=null;
 
-        //#################Need boolean var to check if product id exists
-
         int objectIndex=0;
         int tempProductId=Integer.parseInt(productDto.getProductId());
         int tempDbProductId;
+        boolean productCheckIfPresent=false;
 
 
         for(DbObject dbObject : tempArray)
@@ -77,9 +89,17 @@ public class CartServiceImplementation implements CartService {
             if(tempDbProductId == tempProductId )
             {
                 mainObject = dbObject;
+
+                productCheckIfPresent = true;
+
                 break;
             }
             objectIndex++;
+        }
+
+        if(!productCheckIfPresent)
+        {
+            //################################################################# Throw Exception
         }
 
         if(mainObject.getUnitStock() > productDto.getUnitStock())
@@ -102,20 +122,145 @@ public class CartServiceImplementation implements CartService {
         return true;
     }
 
+//    @Override
+//    public List<ProductDto> cartListItems(ProductDto productDto) {
     @Override
-    public List<ProductDto> cartListItems(ProductDto productDto) {
+    public List<ProductModel> cartListItems(ProductDto productDto) throws IOException {
 
         boolean exists = cartRepository.existsById(productDto.getUserId());
 
+        System.out.println("here : service");
+
         if(!exists)
         {
-            //Throw exception
+            System.out.println("here : service - error");
+            //####################################################### Throw exception
         }
 
         Product tempProduct = cartRepository.findById(productDto.getUserId()).get();
 
         ArrayList<DbObject> tempArray = tempProduct.getProductList();
         ArrayList<ProductDto> dtoList = new ArrayList<ProductDto>();
+        ArrayList<ProductModel> productModelList = new ArrayList<>();
+
+        final String URL = "http://127.0.0.1:8080/cart/dummy";//########################### Change here
+
+        final Gson gson = new Gson();
+
+        for(DbObject dbObject : tempArray) {
+            HttpUrl.Builder urlBuilder = HttpUrl.parse(URL).newBuilder();
+            urlBuilder.addQueryParameter("productId", dbObject.getProductId());
+            String url = urlBuilder.build().toString();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            int a=1;
+
+            int b=0;
+
+/*            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    System.out.println("here");
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, final Response response) throws IOException {
+                    if (!response.isSuccessful()) {
+
+                        System.out.println("xyz");
+
+                        throw new IOException("Unexpected code " + response);
+                    } else {
+                        // do something wih the result
+
+                        ProductModel productModel = gson.fromJson(response.body().charStream(), ProductModel.class);
+                        productModel.setUserId(productDto.getUserId());
+
+
+                        productModelList.add(productModel);
+                    }
+                }
+
+            });*/
+
+            Response response = client.newCall(request).execute();
+
+            ProductModel productModel = gson.fromJson(response.body().charStream(), ProductModel.class);
+            productModel.setUserId(productDto.getUserId());
+
+
+            productModelList.add(productModel);
+
+
+        }
+
+
+
+
+        return productModelList;
+
+//        return dtoList;
+    }
+}
+
+/*
+
+            client.newCall(request).enqueue(new Callback() {
+
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    System.out.println("error");
+                    //################################ Throw exception
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    if (!response.isSuccessful())
+                    {
+                        throw new IOException("Unexpected code " + response);
+                    }
+
+                    ProductModel productModel = gson.fromJson(response.body().charStream(), ProductModel.class);
+                    productModel.setUserId(productDto.getUserId());
+
+
+                    productModelList.add(productModel);
+                }
+            });
+
+ */
+
+
+
+
+/*
+
+@Override
+                                    public void onFailure(Call call, IOException e)
+                                    {
+                                        //Throw Exception
+
+                                        e.printStackTrace();
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, final Response response) throws IOException {
+                                        if (!response.isSuccessful())
+                                        {
+                                            throw new IOException("Unexpected code " + response);
+                                        }
+
+                                        ProductModel productModel = response.body();
+                                        productModelList.add(productModel);
+                                    }
+ */
+
+/*
+
 
         ProductDto tempProductDto = new ProductDto();
 
@@ -126,39 +271,6 @@ public class CartServiceImplementation implements CartService {
             tempProductDto.setUnitStock(dbObject.getUnitStock());
 
             dtoList.add(tempProductDto);
-        }
-        return dtoList;
-    }
-}
-
-
-/*
-
-
-        DbObject keyObject = new DbObject((long)key,productDto.getUserId());
-
-        boolean exists = cartRepository.existsById(keyObject);
-
-        if(!exists)
-        {
-            //Throw exception
-        }
-
-        Product tempProduct = cartRepository.findById(keyObject).get();
-
-        if(tempProduct.getUnitStock() > productDto.getUnitStock() )//Handle for greater than quantity requests
-        {
-            int unitStock = tempProduct.getUnitStock();
-
-            unitStock = unitStock - productDto.getUnitStock();
-
-            tempProduct.setUnitStock(unitStock);
-
-            cartRepository.save(tempProduct);
-        }
-        else
-        {
-            cartRepository.delete(tempProduct);
         }
 
  */
