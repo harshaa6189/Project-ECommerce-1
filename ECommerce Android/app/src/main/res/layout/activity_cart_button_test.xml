@@ -4,19 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.HomeActivity">
+    tools:context=".View.CartButtonTest">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:orientation="horizontal"
-        android:background="#ebbbc5">
-        <ImageView
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:text="Add to Cart"
+            android:id="@+id/bt_cart"/>
 
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MyCart"
+            android:id="@+id/bt_mycart"/>
 
     </LinearLayout>
 
